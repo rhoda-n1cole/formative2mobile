@@ -2,16 +2,16 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../providers/auth_providers.dart';
+import '../shared/incident_list_view.dart';
 
 class StaffHome extends ConsumerWidget {
   const StaffHome({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(appUserProvider).value;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Staff'),
+        title: const Text('Staff dashboard'),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
@@ -19,7 +19,7 @@ class StaffHome extends ConsumerWidget {
           ),
         ],
       ),
-      body: Center(child: Text('Welcome, ${user?.name ?? ''} (staff)')),
+      body: const IncidentListView(),
     );
   }
 }
