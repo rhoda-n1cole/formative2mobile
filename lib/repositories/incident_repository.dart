@@ -64,4 +64,24 @@ class IncidentRepository {
   }
 
   Future<void> delete(String id) => _col.doc(id).delete();
+
+  // ---- "Me too" support ----
+  Stream<int> watchSupportCount(String id) =>
+      _col.doc(id).collection('supporters').snapshots().map((s) => s.size);
+
+  Stream<bool> watchIsSupporter(String id, String uid) => _col
+      .doc(id)
+      .collection('supporters')
+      .doc(uid)
+      .snapshots()
+      .map((d) => d.exists);
+
+  Future<void> setSupport(String id, String uid, bool support) async {
+    final ref = _col.doc(id).collection('supporters').doc(uid);
+    if (support) {
+      await ref.set({'createdAt': FieldValue.serverTimestamp()});
+    } else {
+      await ref.delete();
+    }
+  }
 }
