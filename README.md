@@ -20,7 +20,17 @@ Built for Mobile Application Development, Individual Assignment 2.
 
 **Staff**
 - Dashboard with a count of reports per status (tap a count to filter)
-- Update a report's status (Submitted, In Review, In Progress, Resolved) with a note for the reporter
+- Update a report's status (Submitted, In Review, In Progress, Resolved) with a note for the reporter## Screenshots
+
+| Student home | New report |
+| --- | --- |
+| ![](screenshots/home.jpeg) | ![](screenshots/report_form.jpeg) |
+
+| Report details | Staff dashboard |
+| --- | --- |
+| ![](screenshots/details.jpeg) | ![](screenshots/staff.jpeg) |
+
+
 
 ## Tech stack
 
