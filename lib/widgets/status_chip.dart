@@ -1,37 +1,26 @@
 import 'package:flutter/material.dart';
 
+import '../app/theme.dart';
+
 class StatusChip extends StatelessWidget {
   const StatusChip(this.status, {super.key});
   final String status;
 
-  Color get _color {
-    switch (status) {
-      case 'In Review':
-        return Colors.orange;
-      case 'In Progress':
-        return Colors.blue;
-      case 'Resolved':
-        return Colors.green;
-      default:
-        return Colors.grey;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    final color = AppColors.forStatus(status);
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: _color.withOpacity(0.15),
+        color: color.withValues(alpha: 0.14),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: _color),
       ),
       child: Text(
         status,
         style: TextStyle(
-          color: _color,
+          color: color,
           fontSize: 12,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w700,
         ),
       ),
     );

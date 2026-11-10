@@ -3,10 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/incident.dart';
 import '../models/status_update.dart';
 import '../repositories/incident_repository.dart';
+import '../repositories/storage_repository.dart';
 import 'auth_providers.dart';
 
 final incidentRepositoryProvider = Provider<IncidentRepository>(
   (ref) => IncidentRepository(ref.watch(firestoreProvider)),
+);
+
+final storageRepositoryProvider = Provider<StorageRepository>(
+  (ref) => StorageRepository(cloudName: 'f2zthgqy', uploadPreset: 'tugdz25t'),
 );
 
 final incidentsProvider = StreamProvider<List<Incident>>(
@@ -21,12 +26,26 @@ final historyProvider = StreamProvider.family<List<StatusUpdate>, String>(
   (ref, id) => ref.watch(incidentRepositoryProvider).watchHistory(id),
 );
 
+final supportCountProvider = StreamProvider.family<int, String>(
+  (ref, id) => ref.watch(incidentRepositoryProvider).watchSupportCount(id),
+);
+
+final isSupporterProvider = StreamProvider.family<bool, String>((ref, id) {
+  final uid = ref.watch(authStateProvider).value?.uid;
+  if (uid == null) return Stream.value(false);
+  return ref.watch(incidentRepositoryProvider).watchIsSupporter(id, uid);
+});
+
 // ---- Filters ----
+const _unset = Object();
+
 class IncidentFilter {
   final String query;
   final String? category;
   final String? status;
   const IncidentFilter({this.query = '', this.category, this.status});
+
+  bool get isActive => query.isNotEmpty || category != null || status != null;
 
   IncidentFilter copyWith({
     String? query,
@@ -38,8 +57,6 @@ class IncidentFilter {
     status: identical(status, _unset) ? this.status : status as String?,
   );
 }
-
-const _unset = Object();
 
 class FilterNotifier extends Notifier<IncidentFilter> {
   @override
